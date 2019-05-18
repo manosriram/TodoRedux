@@ -1,0 +1,12 @@
+#todoApp {
+  margin: auto;
+  text-align: center;
+}
+
+#deleteButton,
+#addTodo {
+  font-size: 2vh;
+  background: midnightblue;
+  color: white;
+  border-radius: 5px;
+}
