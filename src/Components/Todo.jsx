@@ -4,14 +4,20 @@ import "../Styles/App.css";
 const Todo = () => {
   const [todos, addTodos] = useState([]);
   const [currentTodo, updateCurrentTodo] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const updateCurrentTodoFunc = e => {
     updateCurrentTodo(e.target.value);
   };
 
   const addTodo = () => {
-    addTodos([...todos, currentTodo]);
-    updateCurrentTodo("");
+    if (currentTodo === "") {
+      setErrorMessage("Enter Something.");
+    } else {
+      setErrorMessage("");
+      addTodos([...todos, currentTodo]);
+      updateCurrentTodo("");
+    }
   };
 
   const deleteTodo = id => {
@@ -38,11 +44,13 @@ const Todo = () => {
         Add Todo
       </button>
       <br />
+      <br />
+      <h2> {errorMessage}</h2>
       <hr />
       <div id="allTodos">
         {todos.map((todoItem, todoItemIndex) => {
           return (
-            <Fragment>
+            <Fragment key={todoItemIndex}>
               <h2>
                 {todoItemIndex + 1} - {todoItem}
                 <br />
