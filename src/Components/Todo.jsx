@@ -20,9 +20,17 @@ const Todo = props => {
     props.deleteTodo(id);
   };
 
+  const fetchD = e => {
+    props.fetchData(e);
+  };
+
   return (
     <div id="todoApp">
       <h2> TODO.JS </h2>
+      <button onClick={fetchD} id="fetchD">
+        FETCH DATA
+      </button>
+      <br />
       <br />
       <input
         type="text"
@@ -37,6 +45,7 @@ const Todo = props => {
         Add Todo
       </button>
       <br />
+      <p> {props.fetchedData.title}</p>
       <br />
       <h2> {props.errorMessage}</h2>
       <hr />
@@ -65,9 +74,10 @@ const Todo = props => {
 
 const mapStateToProps = state => {
   return {
-    todos: state.todos,
-    currentTodo: state.currentTodo,
-    errorMessage: state.errorMessage
+    todos: state.One.todos,
+    currentTodo: state.One.currentTodo,
+    errorMessage: state.One.errorMessage,
+    fetchedData: state.Two.fetchedData
   };
 };
 
@@ -76,7 +86,8 @@ const mapDispatchToProps = dispatch => {
     addTodos: todo => dispatch(actionCreator.addTodos(todo)),
     updateCurrentTodo: val => dispatch(actionCreator.updateCurrentTodo(val)),
     setErrorMessage: () => dispatch(actionCreator.setErrorMessage()),
-    deleteTodo: id => dispatch(actionCreator.deleteTodo(id))
+    deleteTodo: id => dispatch(actionCreator.deleteTodo(id)),
+    fetchData: e => dispatch(actionCreator.fetchData(e))
   };
 };
 

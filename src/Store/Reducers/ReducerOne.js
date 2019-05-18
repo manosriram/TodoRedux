@@ -4,7 +4,7 @@ let initState = {
   errorMessage: ""
 };
 
-const reducer = (state = initState, action) => {
+const reducerOne = (state = initState, action) => {
   if (action.type === "UPDATE_TODO") {
     return {
       ...state,
@@ -36,4 +36,4 @@ const reducer = (state = initState, action) => {
   return state;
 };
 
-export default reducer;
+export default reducerOne;
