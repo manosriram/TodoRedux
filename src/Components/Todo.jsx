@@ -1,30 +1,23 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "../Styles/App.css";
+import { connect } from "react-redux";
+import * as actionCreator from "../Store/Actions/actions";
 
-const Todo = () => {
-  const [todos, addTodos] = useState([]);
-  const [currentTodo, updateCurrentTodo] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
+const Todo = props => {
   const updateCurrentTodoFunc = e => {
-    updateCurrentTodo(e.target.value);
+    props.updateCurrentTodo(e.target.value);
   };
 
   const addTodo = () => {
-    if (currentTodo === "") {
-      setErrorMessage("Enter Something.");
+    if (props.currentTodo === "") {
+      props.setErrorMessage();
     } else {
-      setErrorMessage("");
-      addTodos([...todos, currentTodo]);
-      updateCurrentTodo("");
+      props.addTodos(props.currentTodo);
     }
   };
 
   const deleteTodo = id => {
-    const updatedTodo = todos.filter((todos, todoIndex) => {
-      return todoIndex !== id;
-    });
-    addTodos(updatedTodo);
+    props.deleteTodo(id);
   };
 
   return (
@@ -34,7 +27,7 @@ const Todo = () => {
       <input
         type="text"
         name="currentTodo"
-        value={currentTodo}
+        value={props.currentTodo}
         placeholder="Todo Text"
         onChange={updateCurrentTodoFunc}
       />
@@ -45,10 +38,10 @@ const Todo = () => {
       </button>
       <br />
       <br />
-      <h2> {errorMessage}</h2>
+      <h2> {props.errorMessage}</h2>
       <hr />
       <div id="allTodos">
-        {todos.map((todoItem, todoItemIndex) => {
+        {props.todos.map((todoItem, todoItemIndex) => {
           return (
             <Fragment key={todoItemIndex}>
               <h2>
@@ -70,4 +63,24 @@ const Todo = () => {
   );
 };
 
-export default Todo;
+const mapStateToProps = state => {
+  return {
+    todos: state.todos,
+    currentTodo: state.currentTodo,
+    errorMessage: state.errorMessage
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addTodos: todo => dispatch(actionCreator.addTodos(todo)),
+    updateCurrentTodo: val => dispatch(actionCreator.updateCurrentTodo(val)),
+    setErrorMessage: () => dispatch(actionCreator.setErrorMessage()),
+    deleteTodo: id => dispatch(actionCreator.deleteTodo(id))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todo);
